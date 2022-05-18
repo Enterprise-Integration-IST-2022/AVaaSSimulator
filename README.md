@@ -12,7 +12,7 @@ java -version
 
 Then, to execute the generator of messages use the following command from the target directory:
 ```
-java -jar .\AVaaSSimulator.jar 
+java -jar AVaaSSimulator.jar 
 ```
 ```
 The usage of the Message Producer for AVaaS is the following.
