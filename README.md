@@ -41,7 +41,3 @@ One example of an AV_Event message sent, in JSON, to the dicovered topic in Kafk
 	}
 }
 ```
-One example of an AV_Event message sent, in XML, to the dicovered topic in Kafka is:
-```
-<AV_Event><TimeStamp>2022-04-28 15:06:56.58</TimeStamp><AV_ID>test</AV_ID><Speed>96</Speed><BatteryLevel>86</BatteryLevel><DriverTirenessLevel>50</DriverTirenessLevel><Location>38.73730834347317, -9.302641438338373</Location><EnvironmentalLightning>Sufficient</EnvironmentalLightning><RainConditions>Heavy Rain</RainConditions><FogConditions>Dense Fog</FogConditions><TractionWheelsLevel>4</TractionWheelsLevel></AV_Event>
-```
