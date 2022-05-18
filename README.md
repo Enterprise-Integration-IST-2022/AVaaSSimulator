@@ -26,7 +26,20 @@ where,
 
 One example of an AV_Event message sent, in JSON, to the dicovered topic in Kafka is:
 ```
-{"AV_Event":{"TimeStamp":"2022-04-28 14:47:40.717","AV_ID":"StatusSIMCARD","Speed":"8","BatteryLevel":"62","DriverTirenessLevel":"33","Location":"38.73730834347317, -9.302641438338373","EnvironmentalLightning":"Very Good","RainConditions":"Light Rain","FogConditions":"Dense Fog","TractionWheelsLevel":"74"}}
+{"AV_Event":
+	{
+		"TimeStamp":"2022-02-04 14:49:07.401",
+		"AV_ID":"Toyota-with-driver259876",
+		"Speed":"49",
+		"BatteryLevel":"10",
+		"DriverTirenessLevel":"85",
+		"Location":"38.735330392 -9.13666612",
+		"EnvironmentalLightning":"Good",
+		"RainConditions":"Light Rain",
+		"FogConditions":"None",
+		"TractionWheelsLevel":"25"
+	}
+}
 ```
 One example of an AV_Event message sent, in XML, to the dicovered topic in Kafka is:
 ```
