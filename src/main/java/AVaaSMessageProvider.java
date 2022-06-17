@@ -28,6 +28,8 @@ public class AVaaSMessageProvider {
 	static String brokerList = "localhost:9092";
 	static int throughput = 10;
 	static String typeMessage = "JSON";
+	static String filterprefix = "";
+	
 	static Map<String, List<PartitionInfo> > topics;
 	
 
@@ -122,7 +124,8 @@ public class AVaaSMessageProvider {
 		System.out.println(  
 							 "--broker-list=" + brokerList + "\n" +							 
 							 "--throughput=" + throughput + "\n" +
-							 "--typeMessage=" +  typeMessage + "\n");
+							 "--typeMessage=" +  typeMessage + "\n" +
+							 "--filterprefix=" + filterprefix);
 	}
 	
 	
@@ -133,6 +136,7 @@ public class AVaaSMessageProvider {
 			if (cabecalho[i].compareTo("--broker-list") == 0) brokerList = cabecalho[i+1];
 			else if (cabecalho[i].compareTo("--throughput") == 0) throughput = Integer.valueOf(cabecalho[i+1]).intValue();
 			else if (cabecalho[i].compareTo("--typeMessage") == 0) typeMessage = cabecalho[i+1];
+			else if (cabecalho[i].compareTo("--filterprefix") == 0) filterprefix = cabecalho[i+1]; 
 			else 
 			{
 				System.out.println("Bad argument name: " + cabecalho[i]);
@@ -151,7 +155,7 @@ public class AVaaSMessageProvider {
 		System.out.println("This is the message to send = " + msg.getAsText());
 		String seqkey = new String("");
 		seqkey = msg.getSeqkey();		
-		System.out.println("Sending new message to Kafka... with key=" + seqkey);	
+		System.out.println("Sending new message to Kafka, to the topic = " + topicTarget + ", with key=" + seqkey);	
 		ProducerRecord<String, String> record = new ProducerRecord<>(topicTarget, seqkey, msg.getAsText());		
 		prd.send(record);
 		System.out.println("Sent...");
@@ -166,11 +170,14 @@ public class AVaaSMessageProvider {
 				+ "--broker-list <brokers> "
 				+ "--throughput <value> "
 				+ "--typeMessage <value> "
+				+ "--filterprefix <value> "
 				+ "\n"
 				+ "where, \n"
 				+ "--broker-list: is a broker list with ports (e.g.: kafka02.example.com:9092,kafka03.example.com:9092), default value is localhost:9092\n"
 				+ "--throughput: is the approximate maximum messages to be produced by minute, default value is 10\n"
-				+ "--typeMessage: is the type of message to be produced: JSON or XML, default value is JSON\n";
+				+ "--typeMessage: is the type of message to be produced: JSON or XML, default value is JSON\n"
+				+ "--filterprefix: is the prefix to be filtered. Only the topics starting with this prefix will be considered to sending messages.\n";
+		
 				
 		Properties kafkaProps = new Properties();
 		if (args.length == 0) System.out.println(usage);
@@ -221,8 +228,12 @@ public class AVaaSMessageProvider {
 						{
 							String topic_to_send = RandomTopic();
 							
-							Message messageToSend =  CreateMessage(typeMessage , topic_to_send , mili );						
-							if (messageToSend != null)	SendMessage( messageToSend , producer , topic_to_send );
+							if (topic_to_send.startsWith(filterprefix))
+							{							
+								Message messageToSend =  CreateMessage(typeMessage , topic_to_send , mili );						
+								if (messageToSend != null)	SendMessage( messageToSend , producer , topic_to_send );
+							}
+							else System.out.println("Topic = " + topic_to_send + " has been filtered. Therefore, not sending message.");
 						}
 						else System.out.println("Empty list of Topics. Therefore, no message to send.");
 							
